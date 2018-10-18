@@ -400,9 +400,7 @@
   overflow: auto;
   background: rgba(51, 51, 51, 0.5);
 }
-.modal_open {
-  display: flex;
-}
+
 .modal_open .modal__content {
   animation: modal 0.2s ease forwards;
 }
@@ -461,7 +459,9 @@
   from {
     transform: scale(0.2);
   }
-to-transform: scale(1);
+to {
+  transform: scale(1)
+}
 }
 * {
   box-sizing: border-box;
@@ -569,9 +569,7 @@ html {
   top: 0;
   right: 40px;
 }
-.scenarios_hide {
-  display: none;
-}
+
 .weather {
   display: flex;
 }
