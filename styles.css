@@ -1,3 +1,4 @@
+
 .adjust-bar {
   -webkit-appearance: none;
   appearance: none;
@@ -336,7 +337,6 @@
   background: url("assets/sh.png") center center/cover no-repeat;
 }
 .main__greeting {
-  font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin-top: 6px;
   font-size: 27px;
   font-weight: 700;
@@ -457,12 +457,12 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-/*@keyframes modal {*/
-  /*from {*/
-    /*transform: scale(0.2);*/
-  /*}*/
-/*to-transform: scale(1);*/
-/*}*/
+@keyframes modal {
+  from {
+    transform: scale(0.2);
+  }
+to-transform: scale(1);
+}
 * {
   box-sizing: border-box;
 }
