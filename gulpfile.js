@@ -56,6 +56,7 @@ gulp.task('webp', () =>
 gulp.task("copy", function () {
   return gulp.src([
     "fonts/**",
+    "favicon.ico"
   ], {
     base: "."
   })
