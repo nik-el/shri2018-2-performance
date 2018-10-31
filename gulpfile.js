@@ -32,9 +32,10 @@ gulp.task("minify", () =>
 );
 
 gulp.task('uglify', function (cb) {
+  var options = {toplevel: true};
   pump([
       gulp.src('docs/scripts/scripts.js'),
-      uglify(),
+      uglify(options),
       gulp.dest('docs/scripts')
     ],
     cb
