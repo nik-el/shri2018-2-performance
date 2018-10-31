@@ -5,12 +5,14 @@ var posthtml = require("gulp-posthtml");
 var include = require("posthtml-include");
 var minify = require("gulp-csso");
 var imagemin = require("gulp-imagemin");
-var rename = require("gulp-rename");
 var del = require("del");
 var server = require("browser-sync").create();
 var run = require("run-sequence");
 const jsminify = require("gulp-babel-minify");
 const webp = require('gulp-webp');
+var uglify = require('gulp-uglify');
+var pump = require('pump');
+var babel = require('gulp-babel');
 
 gulp.task("style", function () {
   gulp.src("css/*.css")
@@ -20,13 +22,31 @@ gulp.task("style", function () {
 });
 
 gulp.task("minify", () =>
-  gulp.src("scripts/*.js")
+  gulp.src("docs/scripts/scripts.js")
     .pipe(jsminify({
       mangle: {
         keepClassName: true
       }
     }))
     .pipe(gulp.dest("docs/scripts"))
+);
+
+gulp.task('uglify', function (cb) {
+  pump([
+      gulp.src('docs/scripts/scripts.js'),
+      uglify(),
+      gulp.dest('docs/scripts')
+    ],
+    cb
+  );
+});
+
+gulp.task('babel', function() {
+    gulp.src('scripts/scripts.js')
+      .pipe(babel({
+        presets: ['es2015']
+      }))
+      .pipe(gulp.dest('docs/scripts'))}
 );
 
 gulp.task("html", function () {
@@ -82,5 +102,5 @@ gulp.task("serve", function() {
 });
 
 gulp.task("build", function (done) {
-  run("clean", "copy", "style", "minify", "images", "webp", "html", done);
+  run("clean", "copy", "style","babel", "minify", "uglify", "images",  "webp", "html", done);
 });

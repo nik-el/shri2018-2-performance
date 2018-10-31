@@ -1,16 +1,16 @@
-const output = document.querySelector('.modal__value');
-const rangeSLider = document.querySelector('.adjust-bar.adjust-bar_theme_temp');
+var output = document.querySelector('.modal__value');
+var rangeSLider = document.querySelector('.adjust-bar.adjust-bar_theme_temp');
 
 rangeSLider.oninput = function() {
   output.innerHTML = this.value > 0 ? '+' + this.value : this.value;
 }
 
-const arrowLeftDevs = document.querySelector('.devices__paginator .paginator__arrow_left');
-const arrowRightDevs = document.querySelector('.devices__paginator .paginator__arrow_right');
-const panelCountDevs = document.querySelectorAll('.devices__panel').length;
-const devices = document.querySelector('.devices');
-const pagiantorDevs = document.querySelector('.devices__paginator');
-let currentPageDevs = 1;
+var arrowLeftDevs = document.querySelector('.devices__paginator .paginator__arrow_left');
+var arrowRightDevs = document.querySelector('.devices__paginator .paginator__arrow_right');
+var panelCountDevs = document.querySelectorAll('.devices__panel').length;
+var devices = document.querySelector('.devices');
+var pagiantorDevs = document.querySelector('.devices__paginator');
+var currentPageDevs = 1;
 
 pagiantorDevs.classList.toggle('paginator_hide', panelCountDevs < 7);
 
@@ -36,16 +36,16 @@ arrowLeftDevs.addEventListener('click', function () {
   }
 });
 
-let curValue;
-let curRotate;
-let maxRotate = 0.42; // 150 градусов
-let minRotate = -0.42; // -150 градусов
+var curValue;
+var curRotate;
+var maxRotate = 0.42; // 150 градусов
+var minRotate = -0.42; // -150 градусов
 
-const MIN_VALUE = 26;
-const MAX_VALUE = 35;
-const INDICATOR_OFFSET = 265;
+var MIN_VALUE = 26;
+var MAX_VALUE = 35;
+var INDICATOR_OFFSET = 265;
 
-const rotateToValue = function(rotate) {
+var rotateToValue = function(rotate) {
   return Math.floor((Math.abs(rotate * 360 * 1.73 + INDICATOR_OFFSET) / 53) + MIN_VALUE);
 }
 
@@ -70,7 +70,7 @@ function setRotate(rotate) {
 }
 
 function getPosition(elem) {
-  const rect = elem.getBoundingClientRect();
+  var rect = elem.getBoundingClientRect();
 
   return [
     rect.left + (rect.right - rect.left) / 2,
@@ -79,9 +79,9 @@ function getPosition(elem) {
 }
 
 function getMouseAngle(event, centerElem) {
-  const pos = getPosition(centerElem);
-  let cursor = [event.clientX, event.clientY];
-  let rad;
+  var pos = getPosition(centerElem);
+  var cursor = [event.clientX, event.clientY];
+  var rad;
 
   if (event.targetTouches && event.targetTouches[0]) {
     cursor = [event.targetTouches[0].clientX, event.targetTouches[0].clientY];
@@ -93,14 +93,14 @@ function getMouseAngle(event, centerElem) {
   return rad;
 }
 
-let knobDragged;
-let prevAngleRad = null;
-let prevRotate = null;
+var knobDragged;
+var prevAngleRad = null;
+var prevRotate = null;
 
 function startDragging(e) {
   e.preventDefault();
   e.stopPropagation();
-  const rad = getMouseAngle(e, document.querySelector('.knob_center'));
+  var rad = getMouseAngle(e, document.querySelector('.knob_center'));
 
   knobDragged = true;
   prevAngleRad = rad;
@@ -116,9 +116,9 @@ function dragRotate(e) {
     return;
   }
 
-  const old = prevAngleRad;
-  let rad = getMouseAngle(e, document.querySelector('.knob_center'));
-  let delta = rad - old;
+  var old = prevAngleRad;
+  var rad = getMouseAngle(e, document.querySelector('.knob_center'));
+  var delta = rad - old;
 
   prevAngleRad = rad;
 
@@ -129,15 +129,15 @@ function dragRotate(e) {
     delta -= Math.PI * 2;
   }
 
-  const deltaRotate = delta / Math.PI / 2;
-  const rotate = prevRotate + deltaRotate;
+  var deltaRotate = delta / Math.PI / 2;
+  var rotate = prevRotate + deltaRotate;
 
   prevRotate = rotate;
   setRotate(rotate);
 }
 
 function setEvtListeners() {
-  const elem = document.querySelector('.knob-container');
+  var elem = document.querySelector('.knob-container');
 
   elem.addEventListener('mousedown', startDragging);
   document.addEventListener('mouseup', stopDragging);
@@ -159,7 +159,7 @@ document.querySelectorAll('.modal_close').forEach(b => {
   }
 });
 
-const TEMPS = {
+var TEMPS = {
   'manual': -10,
   'cold': 0,
   'warm': 23,
@@ -173,7 +173,7 @@ document.querySelectorAll('.modal__filter-item_temp').forEach(l => {
   }
 });
 
-const showModal = function(selector) {
+var showModal = function(selector) {
   document.querySelector(selector).classList.toggle('modal_open', true);
   document.querySelector('body').style.overflow = 'hidden';
 }
@@ -196,13 +196,13 @@ document.querySelectorAll('.panel_floor').forEach(p => {
   }
 });
 
-const arrowLeftScens = document.querySelector('.scenarios__paginator .paginator__arrow_left');
-const arrowRightScens = document.querySelector('.scenarios__paginator .paginator__arrow_right');
-const panelCountScens = document.querySelectorAll('.scenarios__panel').length;
-const pageCountScens = document.querySelectorAll('.scenarios__page').length;
-const scenarios = document.querySelector('.scenarios');
-const pagiantorScens = document.querySelector('.scenarios__paginator');
-let currentPage = 1;
+var arrowLeftScens = document.querySelector('.scenarios__paginator .paginator__arrow_left');
+var arrowRightScens = document.querySelector('.scenarios__paginator .paginator__arrow_right');
+var panelCountScens = document.querySelectorAll('.scenarios__panel').length;
+var pageCountScens = document.querySelectorAll('.scenarios__page').length;
+var scenarios = document.querySelector('.scenarios');
+var pagiantorScens = document.querySelector('.scenarios__paginator');
+var currentPage = 1;
 
 pagiantorScens.classList.toggle('paginator_hide', panelCountScens <= 9);
 
@@ -232,16 +232,16 @@ arrowLeftScens.addEventListener('click', function () {
   }
 });
 
-const selectButton = document.querySelector('.filter__select-button');
-const selectButtonText = document.querySelector('.filter__select-button .button__text');
-const selectOptions = document.querySelectorAll('.filter__select-item');
-const popup = document.querySelector('.filter__select-popup');
+var selectButton = document.querySelector('.filter__select-button');
+var selectButtonText = document.querySelector('.filter__select-button .button__text');
+var selectOptions = document.querySelectorAll('.filter__select-item');
+var popup = document.querySelector('.filter__select-popup');
 
 selectButton.addEventListener('click', function() {
   popup.classList.toggle('filter__select-popup_open');
 });
 
-let widths = '';
+var widths = '';
 window.addEventListener('scroll', function() {
     widths += document.querySelectorAll('body')[0].offsetWidth;
     document.querySelector('.stats').innerHTML = widths;
