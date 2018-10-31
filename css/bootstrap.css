@@ -1,4 +1,4 @@
-@import url("./fonts/pt_sans.css");
+@import url("pt_sans.css");
 
 /*!
  * Bootstrap v2.3.2
@@ -2308,7 +2308,7 @@ table th[class*="span"],
 .dropdown-submenu:focus > a > [class^="icon-"],
 .dropdown-submenu:hover > a > [class*=" icon-"],
 .dropdown-submenu:focus > a > [class*=" icon-"] {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("../assets/glyphicons-halflings-white.png");
 }
 
 .icon-glass {

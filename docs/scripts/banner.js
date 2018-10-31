@@ -1,0 +1,1 @@
+document.write("<a target=_blank href=\"http://ya.ru\"><img src=\"../assets/banner.webp\" border=0></a>"),!1;

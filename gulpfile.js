@@ -1,60 +1,85 @@
-const gulp = require('gulp');
-const htmlmin = require('gulp-htmlmin');
-var uglify = require('gulp-uglify');
-var pump = require('pump');
-const babel = require('gulp-babel');
-var imagemin = require("gulp-imagemin");
-var csso = require('gulp-csso');
-const minify = require("gulp-babel-minify");
+"use strict";
 
-gulp.task("minifyjs", () =>
-  gulp.src("js/*.js")
-    .pipe(minify({
+var gulp = require("gulp");
+var posthtml = require("gulp-posthtml");
+var include = require("posthtml-include");
+var minify = require("gulp-csso");
+var imagemin = require("gulp-imagemin");
+var rename = require("gulp-rename");
+var del = require("del");
+var server = require("browser-sync").create();
+var run = require("run-sequence");
+const jsminify = require("gulp-babel-minify");
+const webp = require('gulp-webp');
+
+gulp.task("style", function () {
+  gulp.src("css/*.css")
+    .pipe(minify())
+    .pipe(gulp.dest("docs/css"))
+    .pipe(server.stream());
+});
+
+gulp.task("minify", () =>
+  gulp.src("scripts/*.js")
+    .pipe(jsminify({
       mangle: {
         keepClassName: true
       }
     }))
-    .pipe(gulp.dest("./docs"))
+    .pipe(gulp.dest("docs/scripts"))
 );
 
-
-
-gulp.task('csso', function () {
-  return gulp.src('./bootstrap.css')
-    .pipe(csso())
-    .pipe(gulp.dest('./docs'));
-});
-
-gulp.task('default', () =>
-  gulp.src('js/*.js')
-    .pipe(babel({
-      presets: ['@babel/env']
-    }))
-    .pipe(gulp.dest('./docs'))
-);
-
-gulp.task('minify', () => {
-  return gulp.src('*.html')
-    .pipe(htmlmin({ collapseWhitespace: true }))
-    .pipe(gulp.dest('./docs'));
-});
-
-gulp.task('compress', function (cb) {
-  pump([
-      gulp.src('js/*.js'),
-      uglify(),
-      gulp.dest('docs')
-    ],
-    cb
-  );
+gulp.task("html", function () {
+  return gulp.src("*.html")
+    .pipe(posthtml([
+      include()
+    ]))
+    .pipe(gulp.dest("docs"));
 });
 
 gulp.task("images", function () {
-  return gulp.src("assets/**/*.{png,jpg,svg}")
+  return gulp.src("assets/*.{png,jpg,svg}")
     .pipe(imagemin([
       imagemin.optipng({optimizationLevel: 3}),
       imagemin.jpegtran({progressive: true}),
       imagemin.svgo()
     ]))
     .pipe(gulp.dest('docs/assets'));
+});
+
+gulp.task('webp', () =>
+  gulp.src('assets/webp/*.{png,jpg}')
+    .pipe(webp())
+    .pipe(gulp.dest('docs/assets'))
+);
+
+gulp.task("copy", function () {
+  return gulp.src([
+    "fonts/**",
+  ], {
+    base: "."
+  })
+    .pipe(gulp.dest("docs"));
+});
+
+gulp.task("clean", function () {
+  return del("docs");
+});
+
+gulp.task("serve", function() {
+  server.init({
+    server: "docs/",
+    notify: false,
+    open: true,
+    cors: true,
+    ui: false
+  });
+
+  gulp.watch("*.css", ["style"]);
+  gulp.watch("*.js)", ["js"]).on("change", server.reload);
+  gulp.watch("*.html", ["html"]).on("change", server.reload);
+});
+
+gulp.task("build", function (done) {
+  run("clean", "copy", "style", "minify", "images", "webp", "html", done);
 });
